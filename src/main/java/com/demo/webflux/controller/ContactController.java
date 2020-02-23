@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
+
 @RestController
 public class ContactController {
 
@@ -22,20 +24,20 @@ public class ContactController {
     @Autowired
     private ContactService contactService;
 
+    @GetMapping(value = "/stream/contacts", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Contact> streamAllTweets() {
+        return this.contactService.getAll();
+    }
+
     @GetMapping("/contacts")
     public Flux<Contact> getAll() {
         return this.contactService.getAll().log();
     }
 
     @PostMapping("/contact")
-    public Mono<Contact> save(@RequestBody Contact contact) {
+    public Mono<Contact> save(@Valid @RequestBody Contact contact) {
         log.info("Request Body..." + new Gson().toJson(contact));
         return this.contactService.save(contact).log();
-    }
-
-    @GetMapping(value = "/stream/contacts", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Contact> streamAllTweets() {
-        return this.contactService.getAll();
     }
 
 }

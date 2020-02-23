@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -14,6 +15,7 @@ public class Contact {
 
     @Id
     private String id;
+    @Size(max = 64)
     private String name;
     private Set<String> mobiles;
     private Set<String> email;
@@ -23,6 +25,7 @@ public class Contact {
     private boolean isBlocked;
     private int distance;
     private List<String> connectionTrail;
+    @Size(max = 256)
     private String note;
 
     public String getId() {
